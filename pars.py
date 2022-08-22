@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
-# '''В терминале вызываем библиотеку requests(для того чтобы работать с запросами), BeautifulSoup(разбор
-# html страницу), csv - встроена и импортируем библиотеки"""
+# """In the terminal, we call the  library "requests" (in order to work with requests), "BeautifulSoup" (parsing
+# "html" page), csv - built in and import libraries"""
 
-# Задаем константы'''
+# """Set constants"""
 
 CSV = 'deposits.csv'
 HOST = 'https://myfin.by/'
@@ -15,25 +15,25 @@ HEADERS = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36'
 }
 
-#''' Константа HOST - наш домен, URL - той страницы которую парсим и заголовки HEADERS (просмотр кода (NETWORK)
-# и обновляем страницу - accept и user-agent скопировали''')
+#''' The constant "HOST" - is our domain, "URL" - of that page is parsed and "HEADERS" headers (code view (NETWORK)
+# and page refresh - "accept" and "user-agent" copied''')
 
 def get_html(url, params=''):
     r = requests.get(url, headers=HEADERS, params=params)
     return r
-# """Задаем первую функцию обращения к странице, чтобы получить содержимое страницы, мы бробрасываем в первом параметре url,
-# второй параметры = параметры. Пишем запрос r, обращаемя к методу библиотеки get(бробрасываем url, заголовки, и
-# параметры. B конце функция возвращает нашу переменную r, в которой будет находится наш объект с html.
-# Мы можем запустить нашу функцию по параметрам и должны увидеть что наша функция отработала(get.) и сохраняем (html = ),
+# """1. We set the first destination of the page call to get the content of the page, we look in the first parameter of the URL,
+# second parameter = parameter. We write a request "r", we turn to method the library "get" (we pick "url", headers, and
+# parameter. The B function returns our variable "r", which contains our "html" object.
+# We use our function by parameters and should see that our function worked (get.) and saved (html = ).
 # html = get_html(URL)
 # print(html)
-# Запустили без ошибок, можно ее удалить.
-# Далее мы работаем точечно, вытягиваем контент.
+# Launched without errors, you can delete it.
+# Next, we work pointwise, pulling out the content.
 
-#Создаю вторую функцию которая у нас будет получать контент, в ней мы будем получать html.
-# Использую второй модуль BeautifulSoup(он поможет распарсить html и получить те элементы страницы, которые нам
-# нужны,  пишем переменную soup в которую будем получать объект страницы, обращаемся к BeautifulSoup у которого
-# параметры html и к htmp парсеру."""
+# 2. I create a second function that will receive content from us, in which we will receive "html".
+# I use the second module "BeautifulSoup" (it will help parse "html" and get those page elements that we
+# are needed, we write the variable "soup" into which we will receive the page object, we turn to "BeautifulSoup" for which
+# "html" parameters and to the "htmp" parser."""
 
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -41,17 +41,17 @@ def get_content(html):
     deposits = []
     # print(items)
 
-# '''После того как мы получаем эти элементы items, нам нужно его их складывать, поэтому мы создаем массив
-# в который будем складывать эти данные, сразу он будет пустой, но далее в нащей функции будем запускать цикл for
-# который будет пробегаться по этим items.'''
+# '''After we get these "items", we need to add them together, so we create an array
+# in which we will add this data, it will immediately be empty, but then in our function we will run the loop "for"
+# which will iterate over these "items".'''
 
 # html = get_html(URL)
 # get_content(html.text)
-# '''Далее запускаем цикл for который будет наши item разбивать на списки, внутри append записываем те данные
-# которые мы будем собирать, становимся на название любой карты и указываем этот класс, затем указываем где мы этот
-# класс взяли - элемент item.find(div и class) и используем get_text который вытягивает конкретно текст, и в конце
-# for мы будем возвращать список, ссылка link_produkt находится там же и еще тег a в скобках get укажем атрибут href
-# для указания ссылки, для названия банка мы ищем картинку img, и указываем ссылку на картинку src'''
+# '''Next, we launch the loop "for", which will split our "item" into lists, inside append we write that data
+# which we will collect, become the name of any card and indicate this class, then indicate where we are this
+# the class was taken - the element "item.find" (div and class) and use "get_text" which pulls out the specific text, and at the end
+# "for" we will return a list, the "link_produkt" is in the same place and also the a tag in the brackets "get", specify the attribute "href"
+# to specify a link, for the name of the bank we are looking for an image "img", and specify a link to the image "src"'''
     for item in items:
         deposits.append(
             {
@@ -63,16 +63,16 @@ def get_content(html):
         )
     return deposits
 
-#'''Проверяем как работает'''
+#'''Checking how it works'''
 # html = get_html(URL)
 # print(get_content(html.text))
-#'''Для того чтобы ссылка была ссылкой копируем HOST + , и не было пробелов в get.text пишем strip=True и в brand
-# также'''
+#'''In order for the link to be a link, copy "HOST" + , and there are no spaces in "get.text", write "strip=True" and in the "brand"
+# also'''
 
-#'''4. Последним этапом задаем функцию которая работает с сохранением данных (с параметрами items, и куда
-# сохраняем и пишем with open чтобы мы могли открыть файл, используем writer и обращаемяс к классу csv. и к методу
-# writer, далее задаем заголовки и запускаем цикл for и в каждой итерации дописываем строку, сначала обращаемся
-#к самому item и внутри вставляем ключи.
+#'''4. The last step is to set a function that works with saving data (with parameters "items", and where
+# save and write "with open" so we can open the file, use "writer" and call the class "csv." and to the method
+# "writer", then we set the headers and run the "for" loop and in each iteration we add a line, first we turn
+#to the itself "item" and insert the keys inside.
 
 def save_doc(items, path):
     with open(path, 'w', newline='') as file:
@@ -82,14 +82,14 @@ def save_doc(items, path):
             writer.writerow( [item['product-name'], item['link_product'], item['percent'], item['brand']])
 
 
-#'''3. Функция которая будет объект html = get..., в условном операторе if  проверяем чтобы он был равен 200
-# в ином случае будет ошибка. Далее вводим константу PAGENATION (спрашиваем указать количество для парсинга)
-# далее мы указываем что это целочисленное значение и .strip' без пробелов. Создаем deposits пустой массив и
-# пробросим количество страниц и запускаем цикл от 1 , далее используем форматированную строку f и текст, и
-# указываем переменную page. Далее пробрасываем URL и дополнительные параметры , пробрасываем параметр page.
-# Складываем информацию методом extend и в списке deposits у нас будут списки со всех страниц, внутри списка
-# словари, внутрь get_content принимаем html.text.'''
-
+#'''3. The function that will be the object "html = get..." , in the "if" statement we check that it is equal to 200
+# otherwise there will be an error. Next, enter the constant PAGENATION (we ask you to specify the amount for parsing)
+# next we specify that this is an integer value and ".strip" without spaces. We create deposits an empty array and
+# forward the number of pages and loop from 1 , then use the format string "f" and text, and
+# set the variable "page". Next, we forward the "URL" and additional parameters, we forward the parameter "page".
+# We add the information using the method "extendand" in the list "deposits" we will have lists from all pages inside the list
+# dictionaries, inside "get_content" we accept "html.text".'''
+"
 def parser():
     PAGENATION = input('Укажите количество страниц для парсинга: ')
     PAGENATION = int(PAGENATION.strip())
@@ -107,5 +107,5 @@ def parser():
 
 parser()
 
-#'''Укажем save_doc(deposits, CSV)),
-# Запуск'''
+#'''Specify "save_doc"(deposits, CSV)),
+# Run'''
